@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agenda</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+          integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+<body class="container py-5">
+
+<div class="p-5 bg-light rounded shadow mb-5"
+    style="background: url('/image.svg') no-repeat right; background-size: contain">
+    <h1 class="text-primary display-5"> Welcome to my Agenda</h1>
+    <p class="fw-bold mt-3">
+        With this application you will be able to manage your virtual agenda!
+    </p>
+    <p>Check, add, update o delete your contacts on an easy and safe way.</p>
+</div>
+
+<h3>Mis Contactos</h3>
+
+<div class="text-left">
+    <a href="/inversions" class="btn btn-warning">
+        <i class="fa fa-money"></i> Inversiones
+    </a>
+</div>
+
+<div class="alert alert-success alert-dismissible mt-3" th:if="${msgExito ne null}">
+    [[${msgExito}]]
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+<div class="text-end">
+    <a href="/nuevo" class="btn btn-primary">
+        <i class="fa fa-plus"></i> Registrar Contacto
+    </a>
+</div>
+
+<form action="" method="get" autocomplete="off">
+    <div class="row">
+        <div class="col-lg-3 col-md-4">
+            <div class="input-group mb-3">
+                <button class="btn btn-primary" type="submit" id="button-addon1">
+                    <i class="fa fa-search"></i>
+                </button>
+                <input type="text" name="busqueda" class="form-control" placeholder="Busca por Nombre" th:value="${param.busqueda}">
+            </div>
+        </div>
+    </div>
+</form>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Nombre</th>
+        <th>Fecha de Nacimiento</th>
+        <th>Celular</th>
+        <th>Mail</th>
+        <th>Fecha Registro</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="contacto : ${contactosPage}" th:object="${contacto}">
+        <td th:text="*{id}"></td>
+        <td th:text="*{nombre}"></td>
+        <td th:text="*{fechaNacimiento}"></td>
+        <td th:text="*{celular}"></td>
+        <td th:text="*{email}"></td>
+        <td th:text="*{fechaRegistro}"></td>
+        <td>
+            <div class="btn-group btn-group-sm mt-2">
+                <a th:href="@{/{idCont}/editar(idCont=*{id})}" class="btn btn-primary">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <button class="btn btn-danger" onclick="eliminarContacto(this)">
+                    <i class="fa fa-trash"></i>
+                </button>
+                <form th:action="@{/{idCont}/delete(idCont=*{id})}" method="post"></form>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div sd:pagination-summary="">info</div>
+    </div>
+    <div class="col-sm-6">
+        <nav class="pull-right">
+            <ul class="pagination"  sd:pagination="full">
+
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+
+<script>
+    function eliminarContacto(element){
+        let ok = confirm("Seguro que quiere eliminar el contacto?");
+        console.log("digo: "+ ok);
+        element.nextElementSibling.submit();
+    }
+</script>
+</body>
+</html>
